@@ -1,12 +1,12 @@
 /*********************************************************************************
-*  WEB322 – Assignment 1
+*  WEB322 – Assignment 2
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  
 *  No part of this assignment has been copied manually or electronically from any other source
 *  (including web sites) or distributed to other students.
 * 
-*  Name: Daniel Pereira  Student ID: 037747078  Date: 22 Jan 2021
+*  Name: Daniel Pereira  Student ID: 037747078  Date: 29 Jan 2021
 *
-*  Online (Heroku) URL: https://pure-mountain-17983.herokuapp.com
+*  Online (Heroku) URL: https://stark-caverns-03291.herokuapp.com/
 *
 ********************************************************************************/ 
 var HTTP_PORT = process.env.PORT || 8080;
