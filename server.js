@@ -35,15 +35,21 @@ app.get("/about", (req,res) => {
 
 // Routes
 app.get("/managers", (req,res) => {
-    res.send("This route will return a JSON formatted string containing all the employees whose isManager property is set to true.");
+    dataService.getManagers()
+        .then((data) => {res.json(data)})
+        .catch((err) => {res.json(err)})
 });
 
 app.get("/employees", (req,res) => {
-    res.send("This route will return a JSON formatted string containing all of the employees within the employees.json file.");
+    dataService.getAllEmployees()
+        .then((data) => {res.json(data)})
+        .catch((err) => {res.json(err)})
 });
 
 app.get("/departments", (req,res) => {
-    res.send("This route will return a JSON formatted string containing all of the departments within the departments.json file.");
+    dataService.getDepartments()
+        .then((data) => {res.json(data)})
+        .catch((err) => {res.json(err)})
 });
 
 app.get("*", (req,res) => {
@@ -52,10 +58,10 @@ app.get("*", (req,res) => {
 
 // Only call app.listen() if our call to the initialize() method is successful
 dataService.initialize()
-.then((dataService) => {
+.then((data) => {
     // setup http server to listen on HTTP_PORT
     app.listen(HTTP_PORT, onHttpStart);
 })
 .catch((err) => {
     console.log("Error: " + err);
-)};
+});
