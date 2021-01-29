@@ -13,7 +13,7 @@ var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var app = express();
 var path = require("path");
-var dataService = require("data-service");
+// var dataService = require("data-service");
 
 // Output listening on port message.
 function onHttpStart() {
@@ -31,6 +31,23 @@ app.get("/", (req, res) => {
 // The route "/about" must return the about.html file from the views folder.
 app.get("/about", (req,res) => {
     res.sendFile(path.join(__dirname,"/views/about.html"));
+});
+
+// Routes
+app.get("/managers", (req,res) => {
+    res.send("This route will return a JSON formatted string containing all the employees whose isManager property is set to true.");
+});
+
+app.get("/employees", (req,res) => {
+    res.send("This route will return a JSON formatted string containing all of the employees within the employees.json file.");
+});
+
+app.get("/departments", (req,res) => {
+    res.send("This route will return a JSON formatted string containing all of the departments within the departments.json file.");
+});
+
+app.get("*", (req,res) => {
+    res.sendFile(path.join(__dirname,"/views/404.html"),404);
 });
 
 // setup http server to listen on HTTP_PORT
