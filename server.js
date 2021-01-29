@@ -50,5 +50,12 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname,"/views/404.html"),404);
 });
 
-// setup http server to listen on HTTP_PORT
-app.listen(HTTP_PORT, onHttpStart);
+// Only call app.listen() if our call to the initialize() method is successful
+dataService.initialize()
+.then((dataService) => {
+    // setup http server to listen on HTTP_PORT
+    app.listen(HTTP_PORT, onHttpStart);
+})
+.catch((err) => {
+    console.log("Error: " + err);
+)};
