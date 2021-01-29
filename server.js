@@ -13,6 +13,7 @@ var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var app = express();
 var path = require("path");
+var dataService = require("data-service");
 
 // Output listening on port message.
 function onHttpStart() {
