@@ -33,6 +33,16 @@ app.get("/about", (req,res) => {
     res.sendFile(path.join(__dirname,"/views/about.html"));
 });
 
+// Assignment 3, Step 2: Add new routes.
+app.get("/employees/add", (req,res) => {
+    res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
+});
+
+app.get("/images/add", (req,res) => {
+    res.sendFile(path.join(__dirname, "/views/addImage.html"));
+});
+
+
 // Routes
 app.get("/managers", (req,res) => {
     dataService.getManagers()
