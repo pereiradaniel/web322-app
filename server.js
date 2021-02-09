@@ -84,7 +84,7 @@ app.get("*", (req,res) => {
 });
 
 app.post("/images/add", upload.single("imageFile"), (req, res) => {
-    res.send("images");
+    res.redirect("/images");
 });
 
 // Only call app.listen() if our call to the initialize() method is successful
