@@ -11,6 +11,7 @@
 ********************************************************************************/ 
 var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
+var multer = require("multer");
 var app = express();
 var path = require("path");
 var dataService = require("./data-service.js");
@@ -19,6 +20,16 @@ var dataService = require("./data-service.js");
 function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
 };
+
+// Multer setup
+///////////////
+const storage = multer.diskStorage({
+    destination: "/public/images/uploaded",
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({storage: storage});  // use diskStorage function for naming files instead of the default.
 
 // NOTE: for your server to correctly return the "/css/site.css" file, the "static" middleware must be used:  in your server.js file, add the line: app.use(express.static('public')); before your "routes"
 app.use(express.static('public'));
