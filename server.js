@@ -25,7 +25,7 @@ function onHttpStart() {
 // Multer setup
 ///////////////
 const storage = multer.diskStorage({
-    destination: "/public/images/uploaded",
+    destination: "./public/images/uploaded",
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
     }
@@ -52,6 +52,10 @@ app.get("/employees/add", (req,res) => {
 
 app.get("/images/add", (req,res) => {
     res.sendFile(path.join(__dirname, "/views/addImage.html"));
+});
+
+app.post("/images/add", upload.single("imageFile"), (req, res) => {
+    res.redirect("/images");
 });
 
 app.get("/images", (req, res) => {
@@ -83,9 +87,7 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname,"/views/404.html"),404);
 });
 
-app.post("/images/add", upload.single("imageFile"), (req, res) => {
-    res.redirect("/images");
-});
+
 
 // Only call app.listen() if our call to the initialize() method is successful
 dataService.initialize()
