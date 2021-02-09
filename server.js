@@ -12,6 +12,7 @@
 var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var multer = require("multer");
+const fs = require('fs');
 var app = express();
 var path = require("path");
 var dataService = require("./data-service.js");
@@ -53,6 +54,10 @@ app.get("/images/add", (req,res) => {
     res.sendFile(path.join(__dirname, "/views/addImage.html"));
 });
 
+app.get("/images", (req, res) => {
+
+});
+
 // Routes
 app.get("/managers", (req,res) => {
     dataService.getManagers()
@@ -76,7 +81,7 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname,"/views/404.html"),404);
 });
 
-app.post("/images/add", upload.single("photo"), (req, res) => {
+app.post("/images/add", upload.single("imageFile"), (req, res) => {
     res.send("images");
 });
 
