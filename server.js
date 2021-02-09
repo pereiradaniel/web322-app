@@ -56,7 +56,6 @@ app.get("/images/add", (req,res) => {
 
 app.get("/images", (req, res) => {
     fs.readdir(path.join(__dirname, "/public/images/uploaded"), function(err, items) {
-        // console.log(items);
         res.json(items);
     });
 });
