@@ -76,6 +76,10 @@ app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname,"/views/404.html"),404);
 });
 
+app.post("/images/add", upload.single("photo"), (req, res) => {
+    res.send("images");
+});
+
 // Only call app.listen() if our call to the initialize() method is successful
 dataService.initialize()
 .then((data) => {
