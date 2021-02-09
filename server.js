@@ -58,7 +58,7 @@ app.get("/images", (req, res) => {
     fs.readdir(path.join(__dirname, "/public/images/uploaded"), function(err, items) {
         console.log(items);
     });
-    return items;
+    // return items;
 });
 // Routes
 app.get("/managers", (req,res) => {
