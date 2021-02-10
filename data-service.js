@@ -69,4 +69,24 @@ module.exports.getDepartments = function()
     });
 }
 
+// Add an employee
+module.exports.addEmployee = function(employeeData)
+{
+    console.log(employeeData);
+    // return promise
+    return new Promise(function (resolve, reject) {    
+    // if employeeData.isManager is undefined, explicitly set it to false.
+    // otherwise set it to true
+    employeeData.isManager = (!employeeData.isManager) ? false : true;
 
+    //explicity set the employeeNum property of employeeData to be the length of the employees array + 1
+    employeeNum = employees.length + 1;
+
+    // push the updated employee data object onto the employees array and resolve
+    employees.push(employeeData);
+    resolve(employees);
+
+    });
+
+
+}

@@ -49,10 +49,18 @@ app.get("/about", (req,res) => {
 });
 
 // ADD EMPLOYEES
-app.get("/employees/add", (req,res) => {
+app.get("/employees/add", (req, res) => {
     res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
 });
-app.post("/employees/add", dataService.addEmployee(req.body), (res, req) => {
+app.post("/employees/add", (req, res) => {
+    // const formData = req.body;
+    // const formFile = req.file;
+
+    // const dataReceived = JSON.stringify(formData);
+    // res.send(dataReceived);
+
+    dataService.addEmployee(req.body);
+
     res.redirect("/employees"); // Redirect to employees page
 });
 
