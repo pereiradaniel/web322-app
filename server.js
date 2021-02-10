@@ -52,6 +52,9 @@ app.get("/about", (req,res) => {
 app.get("/employees/add", (req,res) => {
     res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
 });
+app.post("/employees/add", dataService.addEmployee(req.body), (res, req) => {
+    res.redirect("/employees"); // Redirect to employees page
+});
 
 // IMAGES
 app.get("/images", (req, res) => {
@@ -65,7 +68,7 @@ app.get("/images/add", (req,res) => {
     res.sendFile(path.join(__dirname, "/views/addImage.html"));
 });
 app.post("/images/add", upload.single("imageFile"), (req, res) => {
-    res.redirect("/images");
+    res.redirect("/images"); // Redirect to images page.
 });
 
 // MANAGERS
