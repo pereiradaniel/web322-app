@@ -57,7 +57,6 @@ module.exports.getManagers = function()
     });
 }
 
-
 // This function will provide the full array of "department" objects using the resolve method of the returned promise.
 module.exports.getDepartments = function()
 {
