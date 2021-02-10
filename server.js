@@ -53,8 +53,8 @@ app.get("/employees/add", (req, res) => {
     res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
 });
 app.post("/employees/add", (req, res) => {
-    console.log(dataService);
-    // dataService.addEmployee(req.body);
+    // console.log(dataService);
+    dataService.addEmployee(req.body);
     res.redirect("/employees"); // Redirect to employees page
 });
 
