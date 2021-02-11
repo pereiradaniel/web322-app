@@ -82,9 +82,27 @@ app.get("/managers", (req,res) => {
 
 // EMPLOYEES
 app.get("/employees", (req,res) => {
-    dataService.getAllEmployees()
-        .then((data) => {res.json(data)})
-        .catch((err) => {res.json(err)})
+    if (req.query.status) {
+        // Return JSON string consisting of all employees where value is either "Full Time" or "Part Time".
+        dataService.getEmployeesByStatus(req.query.status)
+            .then((data) => {res.json(data)})
+            .catch((err) => {res.json(err)})
+    } else if (req.query.department) {
+        // Return JSON string consisting of all employees where value could be one of 1, 2, 4, ... 7.
+        dataService.getEmployeesByDepartment(req.query.department)
+            .then((data) => {res.json(data)})
+            .catch((err) => {res.json(err)})
+    } else if (req.query.manager) {
+        // Return JSON string consisting of all employees where value could be 1, 2, 3, ... 30.
+        dataService.getEmployeesByManager(req.query.manager)
+            .then((data) => {res.json(data)})
+            .catch((err) => {res.json(err)})
+    } else {
+        // Return JSON string of all employees.
+        dataService.getAllEmployees()
+            .then((data) => {res.json(data)})
+            .catch((err) => {res.json(err)})
+    }
 });
 
 // DEPARTMENTS
