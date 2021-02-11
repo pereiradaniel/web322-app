@@ -5,8 +5,7 @@ var departments = [];
 
 // <<--- INITIALIZE EMPLOYEES --->>
 // Read the contents of the employees.json file.
-module.exports.initialize = function()
-{
+module.exports.initialize = function() {
     return new Promise(function(resolve, reject) {
     try {
         fs.readFile('./data/employees.json', (err, data) => 
@@ -28,8 +27,22 @@ module.exports.initialize = function()
 }
 
 // <<--- EMPLOYEES --->>
-module.exports.getAllEmployees = function ()
-{
+// Add an employee
+module.exports.addEmployee = function(employeeData) {
+    return new Promise(function (resolve, reject) {    
+        // if employeeData.isManager is undefined, set it to false, else set to true.
+        employeeData.isManager = !employeeData.isManager ? false : true;
+
+        // set employeeNum to the length of employees array + 1
+        employeeData.employeeNum = employees.length + 1;
+
+        // push employee data object into employees array, resolve.
+        employees.push(employeeData);
+        resolve(employees);
+    });
+}
+
+module.exports.getAllEmployees = function () {
     // Provide array of all employees, using resolve method of returned promise.
     
     return new Promise(function(resolve, reject) {
@@ -37,8 +50,7 @@ module.exports.getAllEmployees = function ()
     });
 }
 
-module.exports.getEmployeesByStatus = function (status)
-{
+module.exports.getEmployeesByStatus = function (status) {
     // Provide array of employees where status property matches status param, using resolve method of returned promise.
 
     return new Promise(function (resolve, reject) {
@@ -55,8 +67,7 @@ module.exports.getEmployeesByStatus = function (status)
     });
 }
 
-module.exports.getEmployeesByDepartment = function (department)
-{
+module.exports.getEmployeesByDepartment = function (department) {
     // Provide array of employees whose department property matches the department param.
     return new Promise(function (resolve, reject) {
         var result = [];
@@ -88,10 +99,24 @@ module.exports.getEmployeesByManager = function (manager) {
     });
 }
 
+module.exports.getEmployeeByNum = function (num) {
+    // Provide a single employee where employeeNum matches num param.
+    return new Promise(function (resolve, reject) {
+        var result = null;
+        for (let employee of employees) {
+            if (employee.employeeNum == num) {
+                result = employee;
+            }
+        }
+
+        // Return meaningful message if no employee found.
+        !result ? reject("No employees match employeeNum: " + num + "!") : resolve(result);
+    })
+}
+
 // <<--- MANAGERS --->>
 // Provide array of employees where isManager == true, using resolve method of returned promise.
-module.exports.getManagers = function()
-{
+module.exports.getManagers = function() {
     return new Promise(function(resolve, reject) {
         var managers = [];
 
@@ -109,25 +134,8 @@ module.exports.getManagers = function()
 }
 
 // Provide the full array of "department" objects using resolve method of returned promise.
-module.exports.getDepartments = function()
-{
+module.exports.getDepartments = function() {
     return new Promise(function (resolve, reject) {
         departments.length == 0 ? reject("No departments!") : resolve(departments);
-    });
-}
-
-// Add an employee
-module.exports.addEmployee = function(employeeData)
-{
-    return new Promise(function (resolve, reject) {    
-        // if employeeData.isManager is undefined, set it to false, else set to true.
-        employeeData.isManager = !employeeData.isManager ? false : true;
-
-        // set employeeNum to the length of employees array + 1
-        employeeData.employeeNum = employees.length + 1;
-
-        // push employee data object into employees array, resolve.
-        employees.push(employeeData);
-        resolve(employees);
     });
 }
