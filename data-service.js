@@ -2,7 +2,9 @@ const fs = require('fs');
 var employees = [];
 var departments = [];
 
-// This function will read the contents of the employees.json file.
+
+// <<--- INITIALIZE EMPLOYEES --->>
+// Read the contents of the employees.json file.
 module.exports.initialize = function()
 {
     return new Promise(function(resolve, reject) {
@@ -10,11 +12,10 @@ module.exports.initialize = function()
         fs.readFile('./data/employees.json', (err, data) => 
             {
                 if (err) reject(err);
-                // Convert the file's contents into an array of objects using JSON parse.
-                // Assign to the employees array.
+                // Convert file contents into array of objects using JSON parse.
                 employees = JSON.parse(data);
 
-                // Only once the read operation has completed succesfully, repate the process for departments.json
+                // Only once the read operation has completed succesfully, repeat the process for departments.json
                 fs.readFile('./data/departments.json', (err, data) =>
                 {       
                     if (err) reject(err);
@@ -26,10 +27,11 @@ module.exports.initialize = function()
     });
 }
 
-// <<--- EMPLOYEE FUNCTIONS --->>
-// This function will provide the full array of "employee" objects using the resolve method of the returned promise.
+// <<--- EMPLOYEES --->>
 module.exports.getAllEmployees = function ()
 {
+    // Provide array of all employees, using resolve method of returned promise.
+    
     return new Promise(function(resolve, reject) {
         employees.length == 0 ? reject("no results returned") : resolve(employees);
     });
@@ -37,11 +39,9 @@ module.exports.getAllEmployees = function ()
 
 module.exports.getEmployeesByStatus = function (status)
 {
-    return new Promise(function (resolve, reject) {
-        // Provide an array of employee objects where status property matches the status param, using the resolve method of the returned promise.
+    // Provide array of employees where status property matches status param, using resolve method of returned promise.
 
-        // Example:
-        // "http://localhost:8080/employees?status=Full Time"
+    return new Promise(function (resolve, reject) {
         var result = [];    // Array for employee objects.
         
         for (let employee of employees) {
@@ -57,7 +57,7 @@ module.exports.getEmployeesByStatus = function (status)
 
 module.exports.getEmployeesByDepartment = function (department)
 {
-    // Provide an array of employee objects whose department property matches the department parameter.
+    // Provide array of employees whose department property matches the department param.
     return new Promise(function (resolve, reject) {
         var result = [];
 
@@ -72,7 +72,24 @@ module.exports.getEmployeesByDepartment = function (department)
     });
 }
 
-// This function will provide an array of "employee" objects whose isManager property is true using the resolve method of the returned promise.
+module.exports.getEmployeesByManager = function (manager) {
+    // Provide array of employees where employeeManagerNum matches manager param.
+    return new Promise(function (resolve, reject) {
+        var result = [];
+        console.log(manager);
+        for (let employee of employees) {
+            if (employee.employeeManagerNum == manager) {
+                result.push(employee);
+            }
+        }
+
+        // Return meaningful message if no employees found.
+        result.length == 0 ? reject("No employees with employeeManagerNum: " + manager + "!") : resolve(result);
+    });
+}
+
+// <<--- MANAGERS --->>
+// Provide array of employees where isManager == true, using resolve method of returned promise.
 module.exports.getManagers = function()
 {
     return new Promise(function(resolve, reject) {
@@ -91,7 +108,7 @@ module.exports.getManagers = function()
     });
 }
 
-// This function will provide the full array of "department" objects using the resolve method of the returned promise.
+// Provide the full array of "department" objects using resolve method of returned promise.
 module.exports.getDepartments = function()
 {
     return new Promise(function (resolve, reject) {
@@ -102,17 +119,15 @@ module.exports.getDepartments = function()
 // Add an employee
 module.exports.addEmployee = function(employeeData)
 {
-    // return promise
     return new Promise(function (resolve, reject) {    
-    // if employeeData.isManager is undefined, explicitly set it to false.
-    // otherwise set it to true
-    employeeData.isManager = !employeeData.isManager ? false : true;
+        // if employeeData.isManager is undefined, set it to false, else set to true.
+        employeeData.isManager = !employeeData.isManager ? false : true;
 
-    //explicity set the employeeNum property of employeeData to be the length of the employees array + 1
-    employeeData.employeeNum = employees.length + 1;
+        // set employeeNum to the length of employees array + 1
+        employeeData.employeeNum = employees.length + 1;
 
-    // push the updated employee data object onto the employees array and resolve
-    employees.push(employeeData);
-    resolve(employees);
+        // push employee data object into employees array, resolve.
+        employees.push(employeeData);
+        resolve(employees);
     });
 }
