@@ -31,10 +31,7 @@ module.exports.initialize = function()
 module.exports.getAllEmployees = function ()
 {
     return new Promise(function(resolve, reject) {
-        resolve(employees);
-        if (employees.length == 0) {
-            reject("no results returned");
-        }
+        employees.length == 0 ? reject("no results returned") : resolve(employees);
     });
 }
 
@@ -48,13 +45,30 @@ module.exports.getEmployeesByStatus = function (status)
         var result = [];    // Array for employee objects.
         
         for (let employee of employees) {
-            if (employee.status == status) {
+            if (employee.status.toLowerCase() == status.toLowerCase()) {
                 result.push(employees);
             }
         }
 
         // If no results match, return a meaningful message, otherwise, resolve.
-        result.length == 0 ? reject("No results!") : resolve(result);
+        result.length == 0 ? reject("No employees match status: " + status + "!") : resolve(result);
+    });
+}
+
+module.exports.getEmployeesByDepartment = function (department)
+{
+    // Provide an array of employee objects whose department property matches the department parameter.
+    return new Promise(function (resolve, reject) {
+        var result = [];
+
+        for (let employee of employees) {
+            if (employee.department == department) {
+                result.push(employee);
+            }
+        }
+
+        // Return meaningful message if no employees found.
+        result.length == 0 ? reject("No employees match dept: " + department + "!") : resolve(result);
     });
 }
 
@@ -73,7 +87,7 @@ module.exports.getManagers = function()
         }
         
         // Return meaningful message if no results returned, or resolve.
-        managers.length == 0 ? reject("No results returned!") : resolve(managers);
+        managers.length == 0 ? reject("No managers!") : resolve(managers);
     });
 }
 
@@ -81,10 +95,7 @@ module.exports.getManagers = function()
 module.exports.getDepartments = function()
 {
     return new Promise(function (resolve, reject) {
-        if(departments.length == 0) {
-            reject("No results returned");
-        }
-        resolve(departments);
+        departments.length == 0 ? reject("No departments!") : resolve(departments);
     });
 }
 
