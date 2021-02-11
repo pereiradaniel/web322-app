@@ -26,6 +26,7 @@ module.exports.initialize = function()
     });
 }
 
+// <<--- EMPLOYEE FUNCTIONS --->>
 // This function will provide the full array of "employee" objects using the resolve method of the returned promise.
 module.exports.getAllEmployees = function ()
 {
@@ -37,6 +38,26 @@ module.exports.getAllEmployees = function ()
     });
 }
 
+module.exports.getEmployeesByStatus = function (status)
+{
+    return new Promise(function (resolve, reject) {
+        // Provide an array of employee objects where status property matches the status param, using the resolve method of the returned promise.
+
+        // Example:
+        // "http://localhost:8080/employees?status=Full Time"
+        var result = [];    // Array for employee objects.
+        
+        for (let employee of employees) {
+            if (employee.status == status) {
+                result.push(employees);
+            }
+        }
+
+        // If no results match, return a meaningful message, otherwise, resolve.
+        result.length == 0 ? reject("No results!") : resolve(result);
+    });
+}
+
 // This function will provide an array of "employee" objects whose isManager property is true using the resolve method of the returned promise.
 module.exports.getManagers = function()
 {
@@ -44,16 +65,15 @@ module.exports.getManagers = function()
         var managers = [];
 
         if(employees.length != 0) {
-            for(var i = 0; i < employees.length; i++) {
-                if(employees[i].isManager == true) {
-                   managers.push(employees[i]);
+            for(let employee of employees) {
+                if(employee.isManager == true) {
+                   managers.push(employee);
                 }
             }
         }
-        else {
-                reject("no results return");
-        }
-        resolve(managers);
+        
+        // Return meaningful message if no results returned, or resolve.
+        managers.length == 0 ? reject("No results returned!") : resolve(managers);
     });
 }
 
@@ -61,10 +81,10 @@ module.exports.getManagers = function()
 module.exports.getDepartments = function()
 {
     return new Promise(function (resolve, reject) {
-        resolve(departments);
         if(departments.length == 0) {
             reject("No results returned");
-        } 
+        }
+        resolve(departments);
     });
 }
 
