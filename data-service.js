@@ -1,23 +1,23 @@
 const fs = require('fs');
-var employees = [];
-var departments = [];
+var employees = [];     // Array to hold employee objects.
+var departments = [];   // Array to hold department objects.
 
-
-// <<--- INITIALIZE EMPLOYEES --->>
-// Read the contents of the employees.json file.
+// <<--- INITIALIZE EMPLOYEES AND DEPARMENTS --->>
 module.exports.initialize = function() {
     return new Promise(function(resolve, reject) {
     try {
+        // Read the contents of the employees.json file.
         fs.readFile('./data/employees.json', (err, data) => 
             {
                 if (err) reject(err);
-                // Convert file contents into array of objects using JSON parse.
+                // Convert file contents into array of employee objects using JSON parse.
                 employees = JSON.parse(data);
 
                 // Only once the read operation has completed succesfully, repeat the process for departments.json
                 fs.readFile('./data/departments.json', (err, data) =>
                 {       
                     if (err) reject(err);
+                    // Convert file contents into array of department objects using JSON parse.
                     departments = JSON.parse(data);
                 });   
             }); 
@@ -26,8 +26,7 @@ module.exports.initialize = function() {
     });
 }
 
-// <<--- EMPLOYEES --->>
-// Add an employee
+// <<--- EMPLOYEES -->>
 module.exports.addEmployee = function(employeeData) {
     return new Promise(function (resolve, reject) {    
         // if employeeData.isManager is undefined, set it to false, else set to true.
@@ -43,8 +42,8 @@ module.exports.addEmployee = function(employeeData) {
 }
 
 module.exports.getAllEmployees = function () {
-    // Provide array of all employees, using resolve method of returned promise.
-    
+    // Provide array of all employees, using resolve method of returned promise. 
+
     return new Promise(function(resolve, reject) {
         employees.length == 0 ? reject("no results returned") : resolve(employees);
     });
@@ -69,6 +68,7 @@ module.exports.getEmployeesByStatus = function (status) {
 
 module.exports.getEmployeesByDepartment = function (department) {
     // Provide array of employees whose department property matches the department param.
+
     return new Promise(function (resolve, reject) {
         var result = [];
 
@@ -85,9 +85,10 @@ module.exports.getEmployeesByDepartment = function (department) {
 
 module.exports.getEmployeesByManager = function (manager) {
     // Provide array of employees where employeeManagerNum matches manager param.
+
     return new Promise(function (resolve, reject) {
         var result = [];
-        console.log(manager);
+
         for (let employee of employees) {
             if (employee.employeeManagerNum == manager) {
                 result.push(employee);
@@ -101,8 +102,10 @@ module.exports.getEmployeesByManager = function (manager) {
 
 module.exports.getEmployeeByNum = function (num) {
     // Provide a single employee where employeeNum matches num param.
+
     return new Promise(function (resolve, reject) {
         var result = null;
+
         for (let employee of employees) {
             if (employee.employeeNum == num) {
                 result = employee;
@@ -115,8 +118,9 @@ module.exports.getEmployeeByNum = function (num) {
 }
 
 // <<--- MANAGERS --->>
-// Provide array of employees where isManager == true, using resolve method of returned promise.
 module.exports.getManagers = function() {
+    // Provide array of employees where isManager == true, using resolve method of returned promise.
+
     return new Promise(function(resolve, reject) {
         var managers = [];
 
@@ -133,8 +137,10 @@ module.exports.getManagers = function() {
     });
 }
 
-// Provide the full array of "department" objects using resolve method of returned promise.
+// <<--- DEPARTMENTS --->>
 module.exports.getDepartments = function() {
+    // Provide the full array of "department" objects using resolve method of returned promise.
+
     return new Promise(function (resolve, reject) {
         departments.length == 0 ? reject("No departments!") : resolve(departments);
     });

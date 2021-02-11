@@ -4,11 +4,12 @@
 *  No part of this assignment has been copied manually or electronically from any other source
 *  (including web sites) or distributed to other students.
 * 
-*  Name: Daniel Pereira  Student ID: 037747078  Date: 29 Jan 2021
+*  Name: Daniel Pereira  Student ID: 037747078  Date: 02 Feb 2021
 *
 *  Online (Heroku) URL: https://stark-caverns-03291.herokuapp.com/
 *
 ********************************************************************************/ 
+
 var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
 var multer = require("multer");
@@ -23,23 +24,23 @@ function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
 };
 
-// Multer setup ------------------------------------------>>
+// <<--- Set up: MULTER, BODY-PARSER, STATIC --->>
 const storage = multer.diskStorage({
     destination: "./public/images/uploaded",
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-
-const upload = multer({storage: storage});  // use diskStorage function for naming files instead of the default.
-// ------------------------------------------------------->>
+// use diskStorage function for naming files instead of the default.
+const upload = multer({storage: storage});
 
 // Set middleware for 'urlencoded' form data (normal HTTP post data)
 app.use(bodyParser.urlencoded({extended: true}));
 
-// NOTE: for server to correctly return the "/css/site.css" file, "static" middleware must be used before "routes"
+// This must be used before routes for server to correctly return "/css/site.css" file!
 app.use(express.static('public'));
 
+// <<--- ROUTES --->>
 // HOME
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname,"/views/home.html"));
@@ -50,29 +51,18 @@ app.get("/about", (req,res) => {
     res.sendFile(path.join(__dirname,"/views/about.html"));
 });
 
-// ADD EMPLOYEES
-app.get("/employees/add", (req, res) => {
-    res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
-});
-app.post("/employees/add", (req, res) => {
-    // console.log(dataService);
-    dataService.addEmployee(req.body);
-    res.redirect("/employees"); // Redirect to employees page
-});
-
 // IMAGES
-app.get("/images", (req, res) => {
-    fs.readdir(path.join(__dirname, "/public/images/uploaded"), function(err, items) {
-        res.json(items);
-    });
-});
-
-// ADD IMAGES
 app.get("/images/add", (req,res) => {
     res.sendFile(path.join(__dirname, "/views/addImage.html"));
 });
 app.post("/images/add", upload.single("imageFile"), (req, res) => {
     res.redirect("/images"); // Redirect to images page.
+});
+
+app.get("/images", (req, res) => {
+    fs.readdir(path.join(__dirname, "/public/images/uploaded"), function(err, items) {
+        res.json(items);
+    });
 });
 
 // MANAGERS
@@ -83,6 +73,15 @@ app.get("/managers", (req,res) => {
 });
 
 // EMPLOYEES
+app.get("/employees/add", (req, res) => {
+    res.sendFile(path.join(__dirname, "/views/addEmployee.html"));
+});
+app.post("/employees/add", (req, res) => {
+    // console.log(dataService);
+    dataService.addEmployee(req.body);
+    res.redirect("/employees"); // Redirect to employees page
+});
+
 app.get("/employees", (req,res) => {
     if (req.query.status) {
         // Return JSON string consisting of all employees where value is either "Full Time" or "Part Time".
@@ -107,7 +106,6 @@ app.get("/employees", (req,res) => {
     }
 });
 
-// EMPLOYEE
 app.get("/employee/:empId", (req, res) => {
     // Return a JSON formatted string containing the employee whose employeeNum matches the value.
         dataService.getEmployeeByNum(req.params.empId)
