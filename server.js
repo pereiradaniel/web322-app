@@ -23,14 +23,16 @@ function onHttpStart() {
     console.log("Express http server listening on: " + HTTP_PORT);
 };
 
-// Multer setup
+// Multer setup ------------------------------------------>>
 const storage = multer.diskStorage({
     destination: "./public/images/uploaded",
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
+
 const upload = multer({storage: storage});  // use diskStorage function for naming files instead of the default.
+// ------------------------------------------------------->>
 
 // Set middleware for 'urlencoded' form data (normal HTTP post data)
 app.use(bodyParser.urlencoded({extended: true}));
@@ -103,6 +105,14 @@ app.get("/employees", (req,res) => {
             .then((data) => {res.json(data)})
             .catch((err) => {res.json(err)})
     }
+});
+
+// EMPLOYEE
+app.get("/employee/:empId", (req, res) => {
+    // Return a JSON formatted string containing the employee whose employeeNum matches the value.
+        dataService.getEmployeeByNum(req.params.empId)
+            .then((data) => {res.json(data)})
+            .catch((err) => {res.json(err)})
 });
 
 // DEPARTMENTS
